@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hearts for Hearts — Learn How Your Heart Works</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#A61B2B">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Hearts4Hearts">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF6F4;
+    --paper-2:#F1E5E3;
+    --ink:#2A1316;
+    --ink-soft:#6B4448;
+    --crimson:#A61B2B;
+    --crimson-deep:#6E0F1F;
+    --crimson-bright:#D93B4A;
+    --line:rgba(42,19,22,0.14);
+    --focus:#D93B4A;
+    --shadow: 0 1px 0 rgba(42,19,22,0.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#170B0D;
+      --paper-2:#201214;
+      --ink:#F5E7E5;
+      --ink-soft:#C79FA2;
+      --crimson:#E14C57;
+      --crimson-deep:#9E2A38;
+      --crimson-bright:#FF6B76;
+      --line:rgba(245,231,229,0.16);
+      --shadow: 0 1px 0 rgba(0,0,0,0.3);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#170B0D;
+    --paper-2:#201214;
+    --ink:#F5E7E5;
+    --ink-soft:#C79FA2;
+    --crimson:#E14C57;
+    --crimson-deep:#9E2A38;
+    --crimson-bright:#FF6B76;
+    --line:rgba(245,231,229,0.16);
+    --shadow: 0 1px 0 rgba(0,0,0,0.3);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{
+    font-family:'Source Serif 4',Georgia,'Times New Roman',serif;
+    font-weight:700;
+    color:var(--ink);
+    margin:0;
+  }
+  a{color:var(--crimson-deep);}
+  :root[data-theme="dark"] a, @media (prefers-color-scheme:dark){ a{color:var(--crimson-bright);} }
+  a:focus-visible, button:focus-visible, .quiz-opt:focus-visible{
+    outline:3px solid var(--focus);
+    outline-offset:3px;
+  }
+  img{max-width:100%;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px;}
+  .row{overflow-x:auto;}
+
+  /* ---------- Nav ---------- */
+  nav{
+    position:sticky;top:0;z-index:50;
+    background:color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .navwrap{
+    max-width:1080px;margin:0 auto;padding:14px 28px;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Source Serif 4',Georgia,'Times New Roman',serif;font-weight:700;font-size:1.15rem;}
+  .brand svg{width:40px;height:21px;flex:none;}
+  .navlinks{display:flex;gap:22px;list-style:none;padding:0;margin:0;font-size:0.94rem;font-weight:600;}
+  .navlinks a{color:var(--ink-soft);text-decoration:none;}
+  .navlinks a:hover{color:var(--crimson);}
+  .navlinks li{white-space:nowrap;}
+  @media (max-width:680px){ .navlinks{display:none;} }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding:78px 0 40px;
+    text-align:left;
+    position:relative;
+  }
+  .hero .wrap{display:grid;grid-template-columns:1.1fr 0.9fr;gap:40px;align-items:center;}
+  @media (max-width:800px){ .hero .wrap{grid-template-columns:1fr;} }
+  .kicker{
+    font-size:0.95rem;color:var(--crimson);font-weight:600;margin-bottom:14px;
+  }
+  .hero h1{font-size:clamp(2.3rem,5vw,3.4rem);line-height:1.08;letter-spacing:-0.01em;}
+  .hero h1 .accent{color:var(--crimson);}
+  .hero p.lede{
+    margin-top:18px;font-size:1.12rem;color:var(--ink-soft);max-width:46ch;
+  }
+  .hero-ctas{display:flex;gap:14px;margin-top:28px;flex-wrap:wrap;}
+  .btn{
+    font-family:'Inter';font-weight:700;font-size:0.98rem;
+    padding:13px 22px;border-radius:9px;border:2px solid transparent;
+    text-decoration:none;cursor:pointer;display:inline-block;
+  }
+  .btn-primary{background:var(--crimson);color:#fff;}
+  .btn-primary:hover{background:var(--crimson-deep);}
+  .btn-ghost{border-color:var(--line);color:var(--ink);background:transparent;}
+  .btn-ghost:hover{border-color:var(--crimson);color:var(--crimson);}
+
+  .pulse-box{
+    background:var(--paper-2);border-radius:16px;padding:22px 8px;
+    border:1px solid var(--line);
+  }
+  #ecgPath{
+    stroke:var(--crimson);
+    stroke-width:3;
+    fill:none;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    stroke-dasharray:900;
+    stroke-dashoffset:900;
+    animation:draw 2.4s ease-out forwards;
+  }
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+  .pulse-caption{
+    text-align:center;font-size:0.85rem;color:var(--ink-soft);margin-top:4px;
+  }
+  @media (prefers-reduced-motion: reduce){
+    #ecgPath{animation:none;stroke-dashoffset:0;}
+  }
+
+  /* ---------- Section shell ---------- */
+  section{padding:64px 0;border-top:1px solid var(--line);}
+  .eyebrow-row{display:flex;align-items:baseline;gap:14px;margin-bottom:34px;}
+  .section-num{
+    font-family:'Source Serif 4',Georgia,'Times New Roman',serif;font-weight:700;font-size:1.6rem;color:var(--crimson);opacity:0.55;
+  }
+  section h2{font-size:clamp(1.6rem,3vw,2.2rem);}
+
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:center;}
+  .split.reverse{grid-template-columns:1fr 1fr;}
+  .split.reverse .art{order:2;}
+  @media (max-width:800px){
+    .split, .split.reverse{grid-template-columns:1fr;}
+    .split.reverse .art{order:0;}
+  }
+  .art{display:flex;justify-content:center;}
+  .art svg{width:100%;max-width:340px;height:auto;}
+
+  .stat-row{display:flex;gap:34px;flex-wrap:wrap;margin-top:24px;}
+  .stat{min-width:130px;}
+  .stat .num{font-family:'Source Serif 4',Georgia,'Times New Roman',serif;font-size:2.1rem;color:var(--crimson);display:block;line-height:1;}
+  .stat .lbl{font-size:0.85rem;color:var(--ink-soft);}
+
+  .callout{
+    background:var(--paper-2);border-left:4px solid var(--crimson);
+    padding:16px 20px;border-radius:8px;margin-top:22px;font-size:0.98rem;
+  }
+
+  /* ---------- Story timeline ---------- */
+  .timeline{position:relative;padding-left:28px;margin-top:30px;}
+  .timeline::before{
+    content:"";position:absolute;left:6px;top:6px;bottom:6px;width:2px;
+    background:var(--line);
+  }
+  .tl-item{position:relative;padding-bottom:34px;}
+  .tl-item:last-child{padding-bottom:0;}
+  .tl-item::before{
+    content:"";position:absolute;left:-28px;top:4px;width:14px;height:14px;
+    border-radius:50%;background:var(--crimson);border:3px solid var(--paper);
+    box-shadow:0 0 0 1px var(--line);
+  }
+  .tl-item h3{font-size:1.05rem;margin-bottom:6px;}
+  .tl-item p{margin:0;color:var(--ink-soft);}
+  .tl-item .placeholder{
+    color:var(--crimson-deep);font-style:italic;
+  }
+
+  /* ---------- Tips ---------- */
+  .tip-list{display:flex;flex-direction:column;gap:0;margin-top:26px;}
+  .tip{
+    display:flex;gap:18px;padding:22px 0;border-top:1px solid var(--line);
+    align-items:flex-start;
+  }
+  .tip:first-child{border-top:none;}
+  .tip svg{flex:none;width:34px;height:34px;color:var(--crimson);}
+  .tip h3{font-size:1.05rem;margin-bottom:4px;}
+  .tip p{margin:0;color:var(--ink-soft);font-size:0.96rem;}
+
+  /* ---------- Resources ---------- */
+  .res-list{list-style:none;padding:0;margin:26px 0 0;display:flex;flex-direction:column;}
+  .res-list li{border-top:1px solid var(--line);}
+  .res-list li:first-child{border-top:none;}
+  .res-link{
+    display:flex;justify-content:space-between;align-items:center;gap:16px;
+    padding:18px 4px;text-decoration:none;color:var(--ink);
+  }
+  .res-link:hover .res-name{color:var(--crimson);}
+  .res-name{font-weight:700;font-family:'Source Serif 4',Georgia,'Times New Roman',serif;font-size:1.05rem;}
+  .res-desc{color:var(--ink-soft);font-size:0.92rem;margin-top:2px;}
+  .res-arrow{flex:none;width:20px;height:20px;color:var(--ink-soft);transition:transform .15s;}
+  .res-link:hover .res-arrow{transform:translateX(3px);color:var(--crimson);}
+
+  /* ---------- Quiz ---------- */
+  .quiz-card{
+    background:var(--paper-2);border:1px solid var(--line);border-radius:16px;
+    padding:30px;margin-top:10px;
+  }
+  .quiz-q{font-weight:700;font-family:'Source Serif 4',Georgia,'Times New Roman',serif;font-size:1.15rem;margin-bottom:16px;}
+  .quiz-opts{display:grid;gap:10px;}
+  .quiz-opt{
+    text-align:left;padding:13px 16px;border-radius:9px;border:2px solid var(--line);
+    background:var(--paper);color:var(--ink);font-family:'Inter';font-size:0.98rem;cursor:pointer;
+  }
+  .quiz-opt:hover{border-color:var(--crimson);}
+  .quiz-opt.correct{border-color:#3B8F5C;background:color-mix(in srgb, #3B8F5C 12%, var(--paper));}
+  .quiz-opt.wrong{border-color:var(--crimson);background:color-mix(in srgb, var(--crimson) 10%, var(--paper));}
+  .quiz-feedback{margin-top:14px;font-size:0.95rem;min-height:1.4em;color:var(--ink-soft);}
+  .quiz-nav{display:flex;justify-content:space-between;align-items:center;margin-top:20px;}
+  .quiz-progress{font-size:0.85rem;color:var(--ink-soft);}
+
+  footer{
+    padding:40px 0 60px;text-align:center;color:var(--ink-soft);font-size:0.88rem;
+    border-top:1px solid var(--line);
+  }
+  footer .brand{justify-content:center;margin-bottom:10px;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="navwrap">
+    <div class="brand">
+      <svg viewBox="0 0 64 34" fill="none">
+        <circle cx="10" cy="8" r="4" stroke="currentColor" stroke-width="2"/>
+        <path d="M10 12C10 12 6 16 6 22C6 26 8 30 8 30" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M10 14C16 14 20 16 24 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="54" cy="8" r="4" stroke="currentColor" stroke-width="2"/>
+        <path d="M54 12C54 12 58 16 58 22C58 26 56 30 56 30" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M54 14C48 14 44 16 40 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M32 24C28 20 24 21 24 17C24 14 27 13 30 15.5C31 16.3 32 17.5 32 17.5C32 17.5 33 16.3 34 15.5C37 13 40 14 40 17C40 21 36 20 32 24Z" fill="var(--crimson)"/>
+      </svg>
+      Hearts&nbsp;for&nbsp;Hearts
+    </div>
+    <ul class="navlinks">
+      <li><a href="#meet">Your Heart</a></li>
+      <li><a href="#murmur">Murmurs</a></li>
+      <li><a href="#story">My Story</a></li>
+      <li><a href="#care">Take Care</a></li>
+      <li><a href="#findcare">Find Care</a></li>
+      <li><a href="#quiz">Quiz</a></li>
+      <li><a href="#sources">Sources</a></li>
+      <li><a href="#support">Support</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <div class="kicker">A KID'S GUIDE TO THE HEART</div>
+      <h1>Your heart is <span class="accent">already</span> your hardest worker.</h1>
+      <p class="lede">It's been beating since before you were born — about 100,000 times a day — and it never takes a break. Let's find out how it does that, and what happens when a doctor hears something unusual.</p>
+      <div class="hero-ctas">
+        <a href="#meet" class="btn btn-primary">Start learning</a>
+        <a href="#story" class="btn btn-ghost">Read my story</a>
+        <a href="#findcare" class="btn btn-ghost">Find care near you</a>
+        <a href="#quiz" class="btn btn-ghost">Take the quiz</a>
+      </div>
+    </div>
+    <div class="pulse-box">
+      <svg viewBox="0 0 400 120" width="100%" height="120">
+        <path id="ecgPath" d="M0,60 L110,60 L130,20 L150,100 L170,40 L190,60 L400,60"/>
+      </svg>
+      <div class="pulse-caption">One heartbeat, drawn out — the same shape a doctor sees on a monitor.</div>
+    </div>
+  </div>
+</header>
+
+<section id="meet">
+  <div class="wrap">
+    <div class="eyebrow-row"><span class="section-num">1</span><h2>Meet the muscle inside you</h2></div>
+    <div class="split">
+      <div>
+        <p>Your heart is a muscle about the size of your own fist, sitting just left of the middle of your chest. It's split into <strong>four rooms</strong>, called chambers — two on top, two on bottom. Blood flows through them in one direction only, pushed along by one-way doors called valves.</p>
+        <p>The top two rooms collect blood coming in. The bottom two rooms squeeze hard and pump it back out — one side sends blood to your lungs to pick up oxygen, the other side sends that fresh, oxygen-full blood everywhere else in your body.</p>
+        <div class="stat-row">
+          <div class="stat"><span class="num">4</span><span class="lbl">chambers</span></div>
+          <div class="stat"><span class="num">~100k</span><span class="lbl">beats a day</span></div>
+          <div class="stat"><span class="num">~2,000</span><span class="lbl">gallons pumped daily</span></div>
+        </div>
+      </div>
+      <div class="art">
+        <svg viewBox="0 0 260 260" width="260" height="260">
+          <path d="M130 235 C40 175 20 110 55 70 C80 40 120 45 130 85 C140 45 180 40 205 70 C240 110 220 175 130 235 Z" fill="none" stroke="currentColor" stroke-width="2.5" opacity="0.35"/>
+          <line x1="130" y1="90" x2="130" y2="200" stroke="var(--crimson)" stroke-width="2" stroke-dasharray="4 4" opacity="0.6"/>
+          <line x1="72" y1="140" x2="188" y2="140" stroke="var(--crimson)" stroke-width="2" stroke-dasharray="4 4" opacity="0.6"/>
+          <circle cx="100" cy="115" r="5" fill="var(--crimson)"/>
+          <circle cx="160" cy="115" r="5" fill="var(--crimson)"/>
+          <circle cx="100" cy="170" r="5" fill="var(--crimson)"/>
+          <circle cx="160" cy="170" r="5" fill="var(--crimson)"/>
+          <text x="80" y="108" font-size="11" fill="currentColor" font-family="Inter">L atrium</text>
+          <text x="163" y="108" font-size="11" fill="currentColor" font-family="Inter">R atrium</text>
+          <text x="72" y="190" font-size="11" fill="currentColor" font-family="Inter">L ventricle</text>
+          <text x="163" y="190" font-size="11" fill="currentColor" font-family="Inter">R ventricle</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="murmur">
+  <div class="wrap">
+    <div class="eyebrow-row"><span class="section-num">2</span><h2>What's a heart murmur?</h2></div>
+    <div class="split reverse">
+      <div>
+        <p>A normal heartbeat sounds like "lub-DUB" through a stethoscope — that's the valves closing as blood moves through the chambers. A <strong>murmur</strong> is an extra sound in between, often described as a soft whooshing or swishing.</p>
+        <p>It usually just means blood is moving through the heart in a slightly different way than average — sometimes because a valve isn't quite fully formed, or a small opening is still closing up. Doctors find murmurs with a stethoscope, often at a routine checkup, even when a kid feels completely fine.</p>
+        <div class="callout">Most murmurs found in childhood are called <strong>"innocent" murmurs</strong> — the heart is working just fine, and the sound alone isn't something to be scared of. A doctor can tell the difference with a simple, painless test like an echocardiogram (an ultrasound of the heart).</div>
+      </div>
+      <div class="art">
+        <svg viewBox="0 0 300 140" width="300" height="140">
+          <path d="M0,70 L50,70 L65,30 L80,110 L95,50 L110,70 L140,70" fill="none" stroke="currentColor" stroke-width="2" opacity="0.35"/>
+          <path d="M140,70 C155,50 165,90 180,70 C195,50 205,90 220,70" fill="none" stroke="var(--crimson)" stroke-width="2.5"/>
+          <path d="M220,70 L300,70" fill="none" stroke="currentColor" stroke-width="2" opacity="0.35"/>
+          <text x="145" y="105" font-size="11" fill="var(--crimson)" font-family="Inter">the "murmur" sound</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="story">
+  <div class="wrap">
+    <div class="eyebrow-row"><span class="section-num">3</span><h2>My heart, my story</h2></div>
+    <p style="max-width:64ch">I was born with a heart murmur and a 2mm Ventricular Septal Defect, or VSD — a tiny hole between two chambers of the heart. It sounds scary, but it's actually one of the most common heart conditions there is. For a long time, though, nobody explained it to me in a way that made sense. I built Hearts for Hearts because I want kids today to get the heart education I never had.</p>
+    <div class="timeline">
+      <div class="tl-item">
+        <h3>Born with a 2mm VSD</h3>
+        <p>Doctors found a heart murmur right away and diagnosed a small VSD — a tiny opening between the heart's chambers. It's extremely common, and most, like mine, close up on their own over time.</p>
+      </div>
+      <div class="tl-item">
+        <h3>Checkups, slowly spacing out</h3>
+        <p>At first I had checkups every 2 months. As the doctors watched things stay steady, that stretched to every 6 months, then once a year, then every 2 years — each step a quiet sign that things were heading in the right direction.</p>
+      </div>
+      <div class="tl-item">
+        <h3>Starting to understand, around age 8</h3>
+        <p>I only had a rough idea of what was actually going on with my heart. I knew I went to "heart checkups," but not really why, or what a VSD even was.</p>
+      </div>
+      <div class="tl-item">
+        <h3>Cured at 12</h3>
+        <p>By age 12, my VSD had closed and I was cured. Looking back, I wish someone had explained it to me in kid-friendly words the whole way through — instead of me just going along with checkups I didn't fully understand.</p>
+      </div>
+      <div class="tl-item">
+        <h3>Why I built this</h3>
+        <p>If you're a kid with a murmur, a VSD, or any heart condition your doctor mentioned, you deserve to actually understand what's happening in your own chest — not just show up to appointments and hope for the best.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="care">
+  <div class="wrap">
+    <div class="eyebrow-row"><span class="section-num">4</span><h2>Taking care of your heart</h2></div>
+    <div class="tip-list">
+      <div class="tip">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 12h4l2-7 4 14 2-7h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div><h3>Move your body every day</h3><p>Running, biking, swimming, dancing — anything that gets your heart beating faster for a while makes it stronger, just like exercising any other muscle.</p></div>
+      </div>
+      <div class="tip">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 21c4-1 6-4 8-9 2 5 4 8 8 9M4 21l4-13M20 21l-4-13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div><h3>Eat colorful food</h3><p>Fruits, vegetables, and whole grains help keep the blood vessels around your heart clear and flexible.</p></div>
+      </div>
+      <div class="tip">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M3 12a9 9 0 1 0 18 0 9 9 0 0 0-18 0Z" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <div><h3>Get enough sleep</h3><p>Sleep is when your heart rate slows down and rests. Kids need about 9–12 hours a night, depending on age.</p></div>
+      </div>
+      <div class="tip">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 20.5C12 20.5 3 14.8 3 8.7C3 5.6 5.4 3.5 8.1 3.5C9.9 3.5 11.3 4.4 12 5.7C12.7 4.4 14.1 3.5 15.9 3.5C18.6 3.5 21 5.6 21 8.7C21 14.8 12 20.5 12 20.5Z" stroke="currentColor" stroke-width="2"/></svg>
+        <div><h3>Ask questions at checkups</h3><p>If a doctor mentions a sound, a rhythm, or anything about your heart, it's always okay to ask what it means in words that make sense to you.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="findcare">
+  <div class="wrap">
+    <div class="eyebrow-row"><span class="section-num">5</span><h2>Find care near you</h2></div>
+    <p style="max-width:60ch;color:var(--ink-soft)">If you or a family member want to find a children's heart specialist nearby, share your location or type a city — this opens a map search, it doesn't store anything.</p>
+    <div class="quiz-card" style="margin-top:24px;">
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:16px;">
+        <button class="btn btn-primary" id="locBtn" type="button">Use my location</button>
+        <span style="color:var(--ink-soft);font-size:0.9rem;">or</span>
+        <input id="locInput" type="text" placeholder="Enter a city or zip code" style="flex:1;min-width:180px;padding:12px 14px;border-radius:9px;border:2px solid var(--line);background:var(--paper);color:var(--ink);font-family:'Inter';font-size:0.98rem;">
+        <button class="btn btn-ghost" id="locSearchBtn" type="button">Search</button>
+      </div>
+      <div id="locStatus" style="font-size:0.9rem;color:var(--ink-soft);min-height:1.4em;"></div>
+      <ul class="res-list" id="locResults" style="display:none;margin-top:10px;">
+        <li><a class="res-link" id="linkCardio" href="#" target="_blank" rel="noopener"><div><div class="res-name">Pediatric cardiologists near you</div><div class="res-desc">Opens a map search</div></div><svg class="res-arrow" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H9M17 7v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+        <li><a class="res-link" id="linkChildrens" href="#" target="_blank" rel="noopener"><div><div class="res-name">Children's hospitals near you</div><div class="res-desc">Opens a map search</div></div><svg class="res-arrow" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H9M17 7v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+        <li><a class="res-link" id="linkER" href="#" target="_blank" rel="noopener"><div><div class="res-name">Nearest emergency room</div><div class="res-desc">For urgent situations only — call local emergency services first</div></div><svg class="res-arrow" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H9M17 7v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="quiz">
+  <div class="wrap">
+    <div class="eyebrow-row"><span class="section-num">6</span><h2>Test your heart smarts</h2></div>
+    <div class="quiz-card" id="quizCard">
+      <div class="quiz-progress" id="quizProgress">Question 1 of 3</div>
+      <div class="quiz-q" id="quizQ"></div>
+      <div class="quiz-opts" id="quizOpts"></div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+      <div class="quiz-nav">
+        <button class="btn btn-ghost" id="quizRestart" style="display:none;">Try again</button>
+        <span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="sources">
+  <div class="wrap">
+    <div class="eyebrow-row"><span class="section-num">7</span><h2>Learn more from the experts</h2></div>
+    <p style="color:var(--ink-soft);max-width:60ch">This app is a starting point, not medical advice. These trusted organizations have more — for kids, parents, and anyone curious.</p>
+    <ul class="res-list">
+      <li><a class="res-link" href="https://www.heart.org/en/health-topics/congenital-heart-defects" target="_blank" rel="noopener"><div><div class="res-name">American Heart Association</div><div class="res-desc">heart.org — congenital heart defects &amp; kids' heart health</div></div><svg class="res-arrow" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H9M17 7v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+      <li><a class="res-link" href="https://kidshealth.org/en/parents/heart-murmurs.html" target="_blank" rel="noopener"><div><div class="res-name">KidsHealth (Nemours)</div><div class="res-desc">kidshealth.org — heart murmurs explained for families</div></div><svg class="res-arrow" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H9M17 7v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+      <li><a class="res-link" href="https://www.cdc.gov/heart-disease/about/index.html" target="_blank" rel="noopener"><div><div class="res-name">CDC</div><div class="res-desc">cdc.gov — heart disease facts and prevention basics</div></div><svg class="res-arrow" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H9M17 7v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+      <li><a class="res-link" href="https://www.bhf.org.uk/informationsupport/conditions/heart-murmurs" target="_blank" rel="noopener"><div><div class="res-name">British Heart Foundation</div><div class="res-desc">bhf.org.uk — what heart murmurs mean, in plain language</div></div><svg class="res-arrow" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H9M17 7v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+      <li><a class="res-link" href="https://www.mayoclinic.org/diseases-conditions/heart-murmurs/symptoms-causes/syc-20373170" target="_blank" rel="noopener"><div><div class="res-name">Mayo Clinic</div><div class="res-desc">mayoclinic.org — heart murmur symptoms &amp; causes</div></div><svg class="res-arrow" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H9M17 7v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+    </ul>
+  </div>
+</section>
+
+<section id="support">
+  <div class="wrap">
+    <div class="eyebrow-row"><span class="section-num">8</span><h2>Support Hearts 101</h2></div>
+    <p style="max-width:60ch;color:var(--ink-soft)">This app is free for every kid and family who needs it. If it helped you, you can help it reach more classrooms and clinics.</p>
+    <div class="hero-ctas" style="margin-top:20px;">
+      <a href="mailto:nicolewangbusiness@gmail.com?subject=Support%20Hearts%20for%20Hearts" class="btn btn-primary">Get in touch</a>
+      <a href="#sources" class="btn btn-ghost">See our sources</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="brand" style="justify-content:center;">
+      <svg viewBox="0 0 64 34" fill="none" width="34" height="18">
+        <circle cx="10" cy="8" r="4" stroke="currentColor" stroke-width="2"/>
+        <path d="M10 12C10 12 6 16 6 22C6 26 8 30 8 30" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M10 14C16 14 20 16 24 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="54" cy="8" r="4" stroke="currentColor" stroke-width="2"/>
+        <path d="M54 12C54 12 58 16 58 22C58 26 56 30 56 30" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M54 14C48 14 44 16 40 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M32 24C28 20 24 21 24 17C24 14 27 13 30 15.5C31 16.3 32 17.5 32 17.5C32 17.5 33 16.3 34 15.5C37 13 40 14 40 17C40 21 36 20 32 24Z" fill="var(--crimson)"/>
+      </svg>
+      Hearts for Hearts
+    </div>
+    Made to give kids the heart education their maker never had. Not a substitute for medical advice — always talk to a doctor about your own health.
+  </div>
+</footer>
+
+<script>
+  const quizData = [
+    {
+      q: "What do the four rooms inside your heart do?",
+      opts: [
+        "Collect blood and pump it back out in one direction",
+        "Store food for the body",
+        "Make new blood cells only"
+      ],
+      correct: 0,
+      explain: "Blood flows through the four chambers in one direction, kept on track by one-way valves."
+    },
+    {
+      q: "What does a doctor usually use to find a heart murmur?",
+      opts: [
+        "An X-ray machine",
+        "A stethoscope",
+        "A thermometer"
+      ],
+      correct: 1,
+      explain: "A stethoscope lets a doctor listen for the extra whooshing sound of a murmur."
+    },
+    {
+      q: "Which of these helps keep your heart healthy?",
+      opts: [
+        "Sitting still all day",
+        "Skipping sleep",
+        "Regular exercise and colorful food"
+      ],
+      correct: 2,
+      explain: "Movement and good food help your heart muscle and blood vessels stay strong."
+    }
+  ];
+  let qIndex = 0;
+  let answered = false;
+
+  function renderQuiz(){
+    const item = quizData[qIndex];
+    document.getElementById('quizProgress').textContent = `Question ${qIndex+1} of ${quizData.length}`;
+    document.getElementById('quizQ').textContent = item.q;
+    document.getElementById('quizFeedback').textContent = '';
+    document.getElementById('quizRestart').style.display = 'none';
+    answered = false;
+    const optsEl = document.getElementById('quizOpts');
+    optsEl.innerHTML = '';
+    item.opts.forEach((opt, i) => {
+      const b = document.createElement('button');
+      b.className = 'quiz-opt';
+      b.type = 'button';
+      b.textContent = opt;
+      b.addEventListener('click', () => selectAnswer(i));
+      optsEl.appendChild(b);
+    });
+  }
+
+  function selectAnswer(i){
+    if (answered) return;
+    answered = true;
+    const item = quizData[qIndex];
+    const buttons = document.querySelectorAll('.quiz-opt');
+    buttons.forEach((btn, idx) => {
+      if (idx === item.correct) btn.classList.add('correct');
+      else if (idx === i) btn.classList.add('wrong');
+    });
+    const fb = document.getElementById('quizFeedback');
+    fb.textContent = (i === item.correct ? "That's right! " : "Not quite. ") + item.explain;
+
+    setTimeout(() => {
+      if (qIndex < quizData.length - 1) {
+        qIndex++;
+        renderQuiz();
+      } else {
+        document.getElementById('quizQ').textContent = "You've finished the quiz!";
+        document.getElementById('quizOpts').innerHTML = '';
+        document.getElementById('quizFeedback').textContent = 'Nice work learning about your heart.';
+        document.getElementById('quizProgress').textContent = 'Complete';
+        document.getElementById('quizRestart').style.display = 'inline-block';
+      }
+    }, 1400);
+  }
+
+  document.getElementById('quizRestart').addEventListener('click', () => {
+    qIndex = 0;
+    renderQuiz();
+  });
+
+  renderQuiz();
+
+  // ---- PWA install support ----
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("service-worker.js").catch(() => {});
+    });
+  }
+
+  // ---- Find care near you ----
+  function showLocResults(mapsQueryBase){
+    document.getElementById('linkCardio').href = mapsQueryBase('pediatric+cardiologist');
+    document.getElementById('linkChildrens').href = mapsQueryBase('children%27s+hospital');
+    document.getElementById('linkER').href = mapsQueryBase('emergency+room');
+    document.getElementById('locResults').style.display = '';
+  }
+
+  document.getElementById('locBtn').addEventListener('click', () => {
+    const status = document.getElementById('locStatus');
+    if (!navigator.geolocation) {
+      status.textContent = "Location isn't available here — try typing a city or zip instead.";
+      return;
+    }
+    status.textContent = 'Getting your location…';
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const { latitude, longitude } = pos.coords;
+        status.textContent = 'Showing results near you.';
+        showLocResults((term) => `https://www.google.com/maps/search/${term}/@${latitude},${longitude},12z`);
+      },
+      () => {
+        status.textContent = "Couldn't get your location — try typing a city or zip instead.";
+      }
+    );
+  });
+
+  document.getElementById('locSearchBtn').addEventListener('click', () => {
+    const val = document.getElementById('locInput').value.trim();
+    const status = document.getElementById('locStatus');
+    if (!val) {
+      status.textContent = 'Type a city or zip code first.';
+      return;
+    }
+    status.textContent = `Showing results near "${val}".`;
+    const place = encodeURIComponent(val);
+    showLocResults((term) => `https://www.google.com/maps/search/${term}+near+${place}`);
+  });
+</script>
+
+</body>
+</html>

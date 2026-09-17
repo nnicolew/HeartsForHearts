@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hearts for Hearts — For Parents, Educators &amp; Clinics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF6F4;
+    --paper-2:#F1E5E3;
+    --ink:#2A1316;
+    --ink-soft:#6B4448;
+    --crimson:#A61B2B;
+    --crimson-deep:#6E0F1F;
+    --crimson-bright:#D93B4A;
+    --line:rgba(42,19,22,0.14);
+    --focus:#D93B4A;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#170B0D; --paper-2:#201214; --ink:#F5E7E5; --ink-soft:#C79FA2;
+      --crimson:#E14C57; --crimson-deep:#9E2A38; --crimson-bright:#FF6B76;
+      --line:rgba(245,231,229,0.16);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#170B0D; --paper-2:#201214; --ink:#F5E7E5; --ink-soft:#C79FA2;
+    --crimson:#E14C57; --crimson-deep:#9E2A38; --crimson-bright:#FF6B76;
+    --line:rgba(245,231,229,0.16);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.65;}
+  h1,h2,h3{font-family:'Source Serif 4',Georgia,'Times New Roman',serif;font-weight:700;color:var(--ink);margin:0;}
+  a{color:var(--crimson-deep);}
+  @media (prefers-color-scheme:dark){ a{color:var(--crimson-bright);} }
+  :root[data-theme="dark"] a{color:var(--crimson-bright);}
+  a:focus-visible, button:focus-visible{outline:3px solid var(--focus);outline-offset:3px;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 28px;}
+
+  nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb, var(--paper) 88%, transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+  .navwrap{max-width:920px;margin:0 auto;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;}
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Source Serif 4',Georgia,'Times New Roman',serif;font-weight:700;font-size:1.05rem;}
+  .brand svg{width:36px;height:19px;flex:none;}
+  .navlinks{display:flex;gap:20px;list-style:none;padding:0;margin:0;font-size:0.9rem;font-weight:600;}
+  .navlinks a{color:var(--ink-soft);text-decoration:none;}
+  .navlinks a:hover{color:var(--crimson);}
+  @media (max-width:640px){ .navlinks{display:none;} }
+  .btn{font-family:'Inter';font-weight:700;font-size:0.95rem;padding:12px 20px;border-radius:9px;border:2px solid transparent;text-decoration:none;cursor:pointer;display:inline-block;}
+  .btn-primary{background:var(--crimson);color:#fff;}
+  .btn-primary:hover{background:var(--crimson-deep);}
+  .btn-ghost{border-color:var(--line);color:var(--ink);background:transparent;}
+  .btn-ghost:hover{border-color:var(--crimson);color:var(--crimson);}
+
+  .hero{padding:70px 0 44px;}
+  .kicker{font-size:0.9rem;color:var(--crimson);font-weight:600;margin-bottom:14px;}
+  .hero h1{font-size:clamp(2rem,4.4vw,2.9rem);line-height:1.12;letter-spacing:-0.01em;max-width:18ch;}
+  .hero p.lede{margin-top:18px;font-size:1.08rem;color:var(--ink-soft);max-width:56ch;}
+  .hero-ctas{display:flex;gap:14px;margin-top:26px;flex-wrap:wrap;}
+
+  section{padding:52px 0;border-top:1px solid var(--line);}
+  section h2{font-size:clamp(1.4rem,2.6vw,1.9rem);margin-bottom:22px;}
+
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  @media (max-width:760px){ .grid3{grid-template-columns:1fr;} }
+  .fact{border-top:2px solid var(--crimson);padding-top:14px;}
+  .fact .num{font-family:'Source Serif 4',Georgia,'Times New Roman',serif;font-size:1.8rem;color:var(--crimson);display:block;}
+  .fact .lbl{color:var(--ink-soft);font-size:0.92rem;}
+
+  .quote{
+    background:var(--paper-2);border-radius:16px;padding:30px 32px;
+    font-size:1.15rem;line-height:1.55;position:relative;
+  }
+  .quote .attr{margin-top:16px;font-size:0.9rem;color:var(--ink-soft);font-family:'Inter';font-weight:600;}
+
+  .list-check{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:16px;}
+  .list-check li{display:flex;gap:12px;align-items:flex-start;}
+  .list-check svg{flex:none;width:20px;height:20px;color:var(--crimson);margin-top:2px;}
+
+  .tier{border:1px solid var(--line);border-radius:14px;padding:26px;}
+  .tier h3{font-size:1.15rem;margin-bottom:8px;}
+  .tier p{color:var(--ink-soft);margin:0 0 16px;font-size:0.95rem;}
+  .tier-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  @media (max-width:760px){ .tier-grid{grid-template-columns:1fr;} }
+
+  .res-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;}
+  .res-list li{border-top:1px solid var(--line);}
+  .res-list li:first-child{border-top:none;}
+  .res-link{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:16px 4px;text-decoration:none;color:var(--ink);}
+  .res-link:hover .res-name{color:var(--crimson);}
+  .res-name{font-weight:700;font-family:'Source Serif 4',Georgia,'Times New Roman',serif;font-size:1rem;}
+  .res-desc{color:var(--ink-soft);font-size:0.9rem;margin-top:2px;}
+  .res-arrow{flex:none;width:18px;height:18px;color:var(--ink-soft);}
+
+  .cta-band{background:var(--crimson);color:#fff;border-radius:18px;padding:40px 36px;text-align:center;}
+  .cta-band h2{color:#fff;}
+  .cta-band p{color:rgba(255,255,255,0.85);max-width:52ch;margin:12px auto 22px;}
+  .cta-band .btn-primary{background:#fff;color:var(--crimson-deep);}
+  .cta-band .btn-primary:hover{background:#f2dede;}
+
+  footer{padding:36px 0 56px;text-align:center;color:var(--ink-soft);font-size:0.86rem;border-top:1px solid var(--line);}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="navwrap">
+    <div class="brand">
+      <svg viewBox="0 0 64 34" fill="none">
+        <circle cx="10" cy="8" r="4" stroke="currentColor" stroke-width="2"/>
+        <path d="M10 12C10 12 6 16 6 22C6 26 8 30 8 30" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M10 14C16 14 20 16 24 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="54" cy="8" r="4" stroke="currentColor" stroke-width="2"/>
+        <path d="M54 12C54 12 58 16 58 22C58 26 56 30 56 30" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M54 14C48 14 44 16 40 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M32 24C28 20 24 21 24 17C24 14 27 13 30 15.5C31 16.3 32 17.5 32 17.5C32 17.5 33 16.3 34 15.5C37 13 40 14 40 17C40 21 36 20 32 24Z" fill="var(--crimson)"/>
+      </svg>
+      Hearts for Hearts
+    </div>
+    <ul class="navlinks">
+      <li><a href="#why">Why it works</a></li>
+      <li><a href="#story">The story</a></li>
+      <li><a href="#bring">Bring it in</a></li>
+      <li><a href="#sources">Sources</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">FOR PARENTS, EDUCATORS &amp; CLINICS</div>
+    <h1>The heart lesson most kids never get.</h1>
+    <p class="lede">Hearts for Hearts is a free, kid-facing app that explains murmurs, VSDs, and everyday heart health in plain language — built by someone who went through years of checkups without ever really understanding why.</p>
+    <div class="hero-ctas">
+      <a href="#bring" class="btn btn-primary">Bring it to your school or clinic</a>
+      <a href="https://claude.ai/artifact/YLn3JTRoaSGvUDte9dZagD" target="_blank" rel="noopener" class="btn btn-ghost">See the kids' app</a>
+    </div>
+  </div>
+</header>
+
+<section id="why">
+  <div class="wrap">
+    <h2>Why kids need this explained, not just diagnosed</h2>
+    <div class="grid3">
+      <div class="fact"><span class="num">1 in 100</span><span class="lbl">babies is born with a congenital heart condition — most are as minor as a small VSD</span></div>
+      <div class="fact"><span class="num">Most</span><span class="lbl">innocent murmurs and small VSDs resolve on their own with no lasting impact</span></div>
+      <div class="fact"><span class="num">Rarely</span><span class="lbl">explained to the child directly, in language they can actually hold onto</span></div>
+    </div>
+    <div style="margin-top:36px;">
+      <ul class="list-check">
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Plain-language explanations of how the heart works, what a murmur is, and what a VSD is — written for a child, not a chart.</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>A short interactive quiz that reinforces the basics without feeling like homework.</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Built-in links to find pediatric cardiologists and children's hospitals nearby, for families who need next steps.</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Every medical claim links back to a credible source — AHA, CDC, Mayo Clinic, KidsHealth, and the British Heart Foundation.</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="story">
+  <div class="wrap">
+    <h2>Where this came from</h2>
+    <div class="quote">
+      "I was born with a heart murmur and a 2mm VSD — one of the most common heart conditions there is. My checkups went from every 2 months, to 6, to yearly, to every 2 years, and I was cured by 12. But I only ever half-understood what was actually happening. I built Hearts for Hearts because I want kids today to get the heart education I never had."
+      <div class="attr">— Founder, Hearts for Hearts</div>
+    </div>
+  </div>
+</section>
+
+<section id="bring">
+  <div class="wrap">
+    <h2>Bring Hearts for Hearts to your kids</h2>
+    <p style="color:var(--ink-soft);max-width:60ch;margin-top:-6px;margin-bottom:26px;">The app itself is free for every family. For schools, pediatric practices, and hospital foundations, there are a few ways to work together.</p>
+    <div class="tier-grid">
+      <div class="tier">
+        <h3>Classrooms &amp; School Nurses</h3>
+        <p>Use it as a ready-made lesson for health class or a nurse's office resource — no cost, no login required.</p>
+        <a href="mailto:nicolewangbusiness@gmail.com?subject=Hearts%20for%20Hearts%20-%20Classroom%20use" class="btn btn-ghost">Ask about classroom guides</a>
+      </div>
+      <div class="tier">
+        <h3>Pediatric Clinics</h3>
+        <p>Hand families a link at the appointment where a murmur or VSD is first mentioned, so the explanation starts before they even get home.</p>
+        <a href="mailto:nicolewangbusiness@gmail.com?subject=Hearts%20for%20Hearts%20-%20Clinic%20partnership" class="btn btn-ghost">Discuss a partnership</a>
+      </div>
+      <div class="tier">
+        <h3>Hospitals &amp; Foundations</h3>
+        <p>Co-branding, sponsorship, or funding support to help this reach more families who need it.</p>
+        <a href="mailto:nicolewangbusiness@gmail.com?subject=Hearts%20for%20Hearts%20-%20Sponsorship" class="btn btn-ghost">Talk about sponsorship</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="sources">
+  <div class="wrap">
+    <h2>Where the facts come from</h2>
+    <ul class="res-list">
+      <li><a class="res-link" href="https://www.heart.org/en/health-topics/congenital-heart-defects" target="_blank" rel="noopener"><div><div class="res-name">American Heart Association</div><div class="res-desc">heart.org</div></div><svg class="res-arrow" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H9M17 7v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+      <li><a class="res-link" href="https://kidshealth.org/en/parents/heart-murmurs.html" target="_blank" rel="noopener"><div><div class="res-name">KidsHealth (Nemours)</div><div class="res-desc">kidshealth.org</div></div><svg class="res-arrow" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H9M17 7v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+      <li><a class="res-link" href="https://www.cdc.gov/heart-disease/about/index.html" target="_blank" rel="noopener"><div><div class="res-name">CDC</div><div class="res-desc">cdc.gov</div></div><svg class="res-arrow" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H9M17 7v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+      <li><a class="res-link" href="https://www.mayoclinic.org/diseases-conditions/heart-murmurs/symptoms-causes/syc-20373170" target="_blank" rel="noopener"><div><div class="res-name">Mayo Clinic</div><div class="res-desc">mayoclinic.org</div></div><svg class="res-arrow" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H9M17 7v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a></li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="cta-band">
+      <h2>Ready to take a look?</h2>
+      <p>See the full kids' experience — the diagrams, the story, the quiz, and the care finder.</p>
+      <a href="https://claude.ai/artifact/YLn3JTRoaSGvUDte9dZagD" target="_blank" rel="noopener" class="btn btn-primary">Open the kids' app</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Hearts for Hearts — not a substitute for medical advice. Always consult a doctor about a child's individual health.
+  </div>
+</footer>
+
+</body>
+</html>
